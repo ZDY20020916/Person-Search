@@ -1,0 +1,152 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <div style="margin-bottom: 10px;">
+            {#            <a class="btn btn-success" href="#" target="_blank">  <!-- 在新的页面打开 -->#}
+            <a class="btn btn-success" href="/person/add/">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                上传图像进行检测
+            </a>
+        </div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 行人列表
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>图片名称</th>
+                    <th>行人图片</th>
+                    <th>识别结果</th>
+                    <th>用户</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for obj in queryset %}
+                    <tr>
+                        <th scope="row">{{ obj.id }}</th>
+                        <td>{{ obj.img_name }}</td>
+                        <td>
+                            <a href="/data/{{ obj.img }}" target="_blank"><img src="/data/{{ obj.img }}" style="height: 180px; width: 200px"></a>
+                        </td>
+                        <td>
+                            <table class="table">
+                                {% for result in obj.img_result %}
+                                    <tr>
+                                        {% for value in result %}
+                                            <td>{{ value }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                        <td>{{ obj.admin.username }}</td>
+                        <td>
+                            <button uid="{{ obj.id }}" class="btn btn-primary btn-xs btnDetect">检测</button>
+                            <a href="/person/{{ obj.id }}/del/" class="btn btn-danger btn-xs">删除</a>
+                            <button uid="{{ obj.id }}" class="btn btn-primary btn-xs btnShowImg" data-toggle="modal" data-target="#showModel">显示</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <!--分页-->
+        <div class="clearfix">
+            <ul class="pagination" style="float: left;">
+                {{ page_string }}
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- 模态窗口 -->
+    <div id="showModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">图片</h4>
+            </div>
+            <div class="modal-body">
+            <!-- 此处将显示图片 -->
+            <p><img id="modalImg" src="" alt="图片"></p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            bindBtnDetectEvent();
+            bindShowImgEvent();
+        })
+
+        function bindBtnDetectEvent() {
+            $(".btnDetect").click(function () {
+                alert("检测中，请等待...");
+                // 获取自定义的检测id
+                var uid = $(this).attr("uid");
+                $.ajax({
+                    url: "/person/" + uid + "/detect/",
+                    type: "get",
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res.status) {
+                            alert("检测成功");
+
+                            // 用js实现页面刷新
+                            location.reload();
+                        } else {
+                            alert(res.msg);
+                        }
+                    }
+
+                })
+            })
+        }
+
+        function bindShowImgEvent() {
+            $(".btnShowImg").click(function () {
+                alert("显示中，请等待...");
+                // 获取自定义的 id
+                var uid = $(this).attr("uid");
+                // 发起 AJAX 请求以获取图片 URL
+                $.ajax({
+                    url: "/person/" + uid + "/display/",
+                    type: "get",
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res.image_url) {
+                            // 设置模态窗口中的图片 URL
+                            $("#modalImg").attr("src", res.image_url);
+                            // 显示模态窗口
+                            $('#showModal').modal('show');
+                        } else {
+                            alert("无法获取图片");
+                        }
+                    }
+                });
+            })
+        }
+    </script>
+{% endblock %}
+

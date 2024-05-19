@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block content %}
+<!-- 使用内联样式使容器内的所有内容居中，同时设置字体为楷体 -->
+    <div class="container" style="text-align: center; font-family: 'KaiTi','楷体', STKaiti, '华文楷体', serif;">
+        <h1>此系统为1.0版本，老大哥们觉得进步空间很大</h1>
+        <img src="{% static 'img/kalki.png' %}" alt="示例图片" style="display: block; margin: 0 auto; width: 1200px; height: auto; margin-bottom: 30px;"> <!-- 假设每行文本高度为15px，这里设置margin-bottom为30px，即两行的高度 -->
+    </div>
+{% endblock %}

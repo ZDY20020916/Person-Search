@@ -1,0 +1,33 @@
+==========
+Args:Namespace(root='data', dataset='cuhk03', workers=4, height=256, width=128, split_id=0, cuhk03_labeled=False, cuhk03_classic_split=False, use_metric_cuhk03=False, labelsmooth=False, optim='adam', max_epoch=300, start_epoch=0, train_batch=32, test_batch=32, lr=0.0002, stepsize=150, gamma=0.1, weight_decay=0.0005, margin=0.3, num_instances=4, htri_only=False, arch='cspdarknet', print_freq=10, seed=1, resume='', evaluate=False, eval_step=10, start_eval=0, save_dir='log', use_cpu=False, gpu_devices='0', reranking=False, test_distance='global', unaligned=False)
+==========
+Currently using GPU 0
+Initializing dataset cuhk03
+Note: if root path is changed, the previously generated json files need to be re-generated (delete them first)
+Split index = 0
+=> CUHK03 (detected) loaded
+Dataset statistics:
+  ------------------------------
+  subset   | # ids | # images
+  ------------------------------
+  train    |   767 |     7365
+  query    |   700 |     1400
+  gallery  |   700 |     5332
+  ------------------------------
+  total    |  1467 |     8765
+  ------------------------------
+Initializing model: cspdarknet
+start building
+something will be outputed
+something will be outputed
+something will be outputed
+something will be outputed
+something will be outputed
+something will be outputed
+something will be outputed
+something will be outputed
+something will be outputed
+something will be outputed
+Model size: 107.28593M
+==> Start training
+Epoch: [1][10/95]	Time 0.272 (4.917)	Data 0.123 (3.782)	Loss 8.5271 (10.6932)	CLoss 6.6528 (6.6366)	GLoss 1.5197 (3.4560)	LLoss 0.3546 (0.6006)	

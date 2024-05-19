@@ -1,0 +1,84 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AEGIS</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/css/bootstrap-datepicker.css' %}">
+    <style>
+        .navbar {
+            border-radius: 0;
+        }
+        /* 调整模态对话框的最大宽度 */
+        .modal-dialog {
+            max-width: 100%; /* 或者你想要的任何宽度 */
+        }
+
+        /* 使图片在模态对话框内自适应 */
+        #modalImg {
+            width: 100%; /* 使图片宽度为100% */
+            height: auto; /* 保持图片比例 */
+        }
+    </style>
+
+    {% block css %}{% endblock %}
+
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">行人搜寻系统</a>
+        </div>
+
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                {#                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>#}
+                <li><a href="/">行人检测</a></li>
+                <li><a href="/reid/">行人搜索</a></li>
+                <li><a href="/about/">关于</a></li>
+                {% if request.session.info.role == "管理员" %}
+                    <!--<li><a href="/model/list/">模板管理</a></li>-->
+                    <li><a href="/admin/list/">用户管理</a></li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"> {{ request.session.info.name }} <span class="caret"></span></a>
+{#                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"#}
+{#                       aria-expanded="false"> lc <span class="caret"></span></a>#}
+                    <ul class="dropdown-menu">
+                        <li><a href="/user/{{ request.session.info.id }}/edit/">个人资料</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/logout/">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div>
+    {% block content %} {% endblock %}
+</div>
+
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.min.js' %}"></script>
+
+{% block js %}{% endblock %}
+
+</body>
+</html>
